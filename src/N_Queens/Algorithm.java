@@ -6,12 +6,13 @@ public class Algorithm {
     Node result = new Node(size);
 
     switch (algorithm) {
-      case "dfs":
+      case "DFS":
         DFS dfs_visitor = new DFS(initial);
         result = dfs_visitor.runDfs();
         break;
 
-      case "bfs":
+      // "bfs"
+      default:
         BFS bfs_visitor = new BFS(initial);
         result = bfs_visitor.runBfs();
         break;

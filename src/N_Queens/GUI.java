@@ -99,21 +99,18 @@ public class GUI extends JFrame implements ActionListener {
 
     // show the chessboard
     private void showChessboard(int size, String algorithm) {
-        var node = Algorithm.execute(size, algorithm);
-        var resultState = node.getState();
-        // TODO: check the login here
-        ImageIcon image = new ImageIcon(new ImageIcon("queen.png")
-                .getImage().getScaledInstance(400 / size, 400 / size, Image.SCALE_DEFAULT));
+        var state = Algorithm.execute(size, algorithm).getState();
         JPanel boardPanel = new JPanel(new GridLayout(size, size));
         for (int i = 0; i < size; i++) {
+            var position = state.getValues().get(i);
             for (int j = 0; j < size; j++) {
-                var position = resultState.getValues().get(i);
-                System.out.println("Position is" + position.toString());
                 var panel = new JPanel();
                 if ((i + j) % 2 == 1) {
                     panel.setBackground(Color.BLACK);
                 }
                 if (j == position) {
+                    ImageIcon image = new ImageIcon(new ImageIcon("queen.png")
+                            .getImage().getScaledInstance(400 / size, 400 / size, Image.SCALE_DEFAULT));
                     JLabel imageLabel = new JLabel(image);
                     imageLabel.setBackground(Color.white);
                     imageLabel.setOpaque(true);
