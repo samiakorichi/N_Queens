@@ -44,7 +44,7 @@ public class Main {
                     showTree = dfs_visitor.getTreePath(); 
                     break;
                 }else if(op.contains("bfs")){
-                    BFS bfs_visitor = new BFS(initial); //realiza a BFS
+                    BFS bfs_visitor = new BFS(initial); //realize a BFS
                     result = bfs_visitor.runBfs();         //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
                     showTree = bfs_visitor.getTreePath(); //enregistre l'espace de recherche dans une chaîne de caractères
                     break;

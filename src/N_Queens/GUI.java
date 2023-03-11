@@ -1,5 +1,5 @@
 package N_Queens;
-
+//
 
 import javax.swing.*;
 
@@ -11,6 +11,9 @@ public class GUI extends JFrame implements ActionListener {
     private JComboBox<Integer> sizeComboBox;
     private JButton submitButton;
     private JPanel chessboardPanel;
+
+    private JComboBox<String> algorithmComboBox;
+
 
 public GUI() {
     super("Chessboard");
@@ -104,7 +107,7 @@ public void actionPerformed(ActionEvent e) {
         
         // Check if the BFS algorithm is selected and show the solution image
         //check if bfs is selected
-
+/*
     
         String selectedAlgorithm = (String) algorithmComboBox.getSelectedItem();
 
@@ -112,7 +115,22 @@ public void actionPerformed(ActionEvent e) {
             Node initial = new Node(size);
             Node result;
             BFS bfs_visitor = new BFS(initial); 
-            result = bfs_visitor.runBfs();
+            result = bfs_visitor.runBfs();  //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
+            //show the result on the chessboard
+            if (result != null) {
+                ArrayList<Node> path = new ArrayList<Node>();
+                while (result != null) {
+                    path.add(result);
+                    result = result.getParent();
+                }
+                for (int i = path.size() - 1; i >= 0; i--) {
+                    Node node = path.get(i);
+                    int row = node.getRow();
+                    int col = node.getCol();
+                    JPanel square = (JPanel) chessboardPanel.getComponent(row * size + col);
+                    square.setBackground(Color.RED);
+                }
+            }
             
             
             
@@ -122,10 +140,10 @@ public void actionPerformed(ActionEvent e) {
 
 
 
-            }
+            }*/
         }
     }
-}
+
 
 //show the chessboard
 private void showChessboard(int size) {
