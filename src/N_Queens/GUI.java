@@ -27,7 +27,7 @@ public class GUI extends JFrame implements ActionListener {
         JLabel sizeLabel = new JLabel("Choose the size of the chessboard:");
         rightPanel.add(sizeLabel);
 
-        sizeComboBox = new JComboBox<Integer>(new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
+        sizeComboBox = new JComboBox<Integer>(new Integer[] { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
         sizeComboBox.setSelectedIndex(0);
         sizeComboBox.setPreferredSize(new Dimension(30, 20));
         sizeComboBox.addActionListener(this); // add ActionListener to sizeComboBox

@@ -80,10 +80,16 @@ public class Node {
     public Node getParent() {
         return parent;
     }
+    
+    public void setParent(Node parent) {
+		this.parent = parent;
+	}
+    
+    
 
     @Override
     public String toString() {
-        // retorna String que representa o estado desse nó
+        //
         String res = "[";
         for (int i = 0; i < state.getValues().size(); i++) {
             res += this.state.getValues().get(i);
@@ -161,7 +167,48 @@ public class Node {
         res = res + "}";
         return res;
     }
+    
+/////////////////////////////////////////////////////////////
+    public int getCost() {
+	    int actualCost = 0;
+	    Node current = this;
+	    while (current.getParent() != null) {
+	        actualCost++;
+	        current = current.getParent();
+	    }
+	    return actualCost + getHeuristic();
+	}
 
+    private int getHeuristic() {
+	    int heuristic = 0;
+	    ArrayList<Integer> values = State.getValues();
+	    for (int i = 0; i < values.size(); i++) {
+	        for (int j = i + 1; j < values.size(); j++) {
+	            int xi = i;
+	            int yi = values.get(i);
+	            int xj = j;
+	            int yj = values.get(j);
+	            if (yi == yj || xi + yi == xj + yj || xi - yi == xj - yj) {
+	                heuristic++;
+	            }
+	        }
+	    }
+	    return heuristic;
+	}
+
+
+    public int getN() {
+		return n;
+	}
+
+
+	public void setState() {
+		int n= getN();
+		this.state = State.generateRandomState(n);
+	}
+
+////////////////
+    
     public String showTree() {
         return "";
     }
