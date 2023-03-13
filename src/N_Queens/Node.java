@@ -2,8 +2,8 @@ package N_Queens;
 
 import java.util.ArrayList;
 
-public class Node {
-
+public class Node { 
+ 
     int n;
     private State state; // current node state
     private Node parent; // parent node that generated the current node

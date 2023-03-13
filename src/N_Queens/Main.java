@@ -31,14 +31,14 @@ public class Main {
             String showTree = "";
 
             
-
+ 
             while (true) {
                 System.out.println("Vous souhaitez effectuer un dfs ou un bfs ou A* [dfs|bfs|heur]");
                 String op = scan.nextLine().toLowerCase();
                 
                 
                 
-                
+                 
                 if (op.contains("dfs")) {
                     //execution time calculation
                     long startTime = System.nanoTime();

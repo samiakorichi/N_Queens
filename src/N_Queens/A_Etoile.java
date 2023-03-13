@@ -16,7 +16,7 @@ public class A_Etoile {
         this.treePathSize = 0;
 
 	}
-
+ 
   /* public Node runh(){ 
     	 return  aStar(initial);
     }*/
