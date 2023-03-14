@@ -10,6 +10,7 @@ public class DFS {
     private Node initial;           //node where the search will start
     private String treePath;        //string with all visited nodes in order and their neighbors
     private int treePathSize;       //the number of nodes visited during the search
+	private static int nodesGenerated;  // noeud generés
   
  
     public DFS(Node inicial){
@@ -17,6 +18,7 @@ public class DFS {
         this.objectiveNode = null;
         this.treePath = "";
         this.treePathSize = 0;
+        this.nodesGenerated = 0;
     }
 
     public Node runDfs(){    //execute le parcours en profondeur
@@ -26,6 +28,7 @@ public class DFS {
 
     private boolean _dfs(Node v){
         v.generateNeighborhoods();                      //génère tous les voisins du nœud actuel
+        nodesGenerated += v.getNeighbors().size(); // increment nodesGenerated with the number of neighbors generated
         this.treePath += v.toStringNeighbors() + "\n"; //sauvegarde le nœud V et ses voisins dans la chaîne treePath
         this.treePathSize++;
 
@@ -47,5 +50,8 @@ public class DFS {
 
     public String getTreePath() {
         return treePath;
+    }
+    public static int getNodesGenerated() {
+        return nodesGenerated;
     }
 }

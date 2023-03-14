@@ -5,7 +5,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class GUI extends JFrame implements ActionListener {
     private JComboBox<Integer> sizeComboBox;
@@ -30,7 +29,6 @@ public class GUI extends JFrame implements ActionListener {
         sizeComboBox = new JComboBox<Integer>(new Integer[] { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
         sizeComboBox.setSelectedIndex(0);
         sizeComboBox.setPreferredSize(new Dimension(30, 20));
-        sizeComboBox.addActionListener(this); // add ActionListener to sizeComboBox
         rightPanel.add(sizeComboBox);
 
         // label for the image
@@ -47,6 +45,7 @@ public class GUI extends JFrame implements ActionListener {
 
         submitButton = new JButton("Submit");
         submitButton.setPreferredSize(new Dimension(30, 20));
+        submitButton.addActionListener(this); // Listen to submit button
         rightPanel.add(submitButton);
 
         // Create text areas
@@ -90,9 +89,10 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton || e.getSource() == sizeComboBox || e.getSource() == algorithmComboBox) {
+        if (e.getSource() == submitButton) {
             int size = ((Integer) sizeComboBox.getSelectedItem()).intValue();
             String algorithm = algorithmComboBox.getSelectedItem().toString();
+            System.out.println("Size: " + Integer.toString(size) + ", Algorithm: " + algorithm);
             showChessboard(size, algorithm);
         }
     }

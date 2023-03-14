@@ -20,15 +20,5 @@ public class State {
     }
 
 
-    public static State generateRandomState(int n) {
-        ArrayList<Integer> values = new ArrayList<>();
-        Random random = new Random();
-
-        for (int i = 0; i < n; i++) {
-            values.add(random.nextInt(n)); // generate a random row position for the queen in column i
-        }
-
-        return new State(values);
-    }
 }
 
