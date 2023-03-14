@@ -1,16 +1,15 @@
 package N_Queens;
-//
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
 public class GUI extends JFrame implements ActionListener {
-    private JComboBox<Integer> sizeComboBox;
     private JButton submitButton;
     private JPanel chessboardPanel;
     private JComboBox<String> algorithmComboBox;
+    private JTextField sizeField;
+    private JLabel executionTime;
 
     public GUI() {
         super("Chessboard");
@@ -19,18 +18,24 @@ public class GUI extends JFrame implements ActionListener {
         setResizable(true);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-
         JPanel rightPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.add(rightPanel, BorderLayout.EAST);
 
         JLabel sizeLabel = new JLabel("Choose the size of the chessboard:");
         rightPanel.add(sizeLabel);
+        sizeField = new JTextField();
+        // accept only numbers
+        sizeField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume(); // Stop the event from propagating.
+                }
+            }
+        });
 
-        sizeComboBox = new JComboBox<Integer>(new Integer[] { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
-        sizeComboBox.setSelectedIndex(0);
-        sizeComboBox.setPreferredSize(new Dimension(30, 20));
-        rightPanel.add(sizeComboBox);
-
+        rightPanel.add(sizeField);
         // label for the image
         JLabel solutionLabel = new JLabel();
         rightPanel.add(solutionLabel);
@@ -38,7 +43,7 @@ public class GUI extends JFrame implements ActionListener {
         JLabel algorithmLabel = new JLabel("Choose the search algorithm:");
         rightPanel.add(algorithmLabel);
 
-        algorithmComboBox = new JComboBox<String>(new String[] { "BFS", "DFS", "A*" });
+        algorithmComboBox = new JComboBox<String>(new String[] { "BFS", "DFS", "A* heuristic 1", "A* heuristic 2" });
         algorithmComboBox.setSelectedIndex(0);
         algorithmComboBox.setPreferredSize(new Dimension(30, 20));
         rightPanel.add(algorithmComboBox);
@@ -58,26 +63,13 @@ public class GUI extends JFrame implements ActionListener {
 
         // Create labels for the text areas
         JLabel label1 = new JLabel("nombre de noeuds generer");
-        JLabel label2 = new JLabel("temps d'execution");
         JLabel label3 = new JLabel("Text Area 3");
 
-        // Add the menu to the menu bar
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menu");
-        JMenuItem menuItem1 = new JMenuItem("Item 1");
-        JMenuItem menuItem2 = new JMenuItem("Item 2");
-        menu.add(menuItem1);
-        menu.add(menuItem2);
-        menuBar.add(menu);
+        executionTime = new JLabel();
 
-        // Set the menu bar for this frame
-        setJMenuBar(menuBar);
-
-        // Add text areas and labels to the right panel
         rightPanel.add(label1);
         rightPanel.add(textArea1);
-        rightPanel.add(label2);
-        rightPanel.add(textArea2);
+        rightPanel.add(executionTime);
         rightPanel.add(label3);
         rightPanel.add(textArea3);
 
@@ -90,16 +82,39 @@ public class GUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
-            int size = ((Integer) sizeComboBox.getSelectedItem()).intValue();
+            if (sizeField.getText().length() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Size is empty", "Error Message",
+                        JOptionPane.ERROR_MESSAGE);
+                // do not execute algorith and focus size text field
+                sizeField.requestFocus();
+                return;
+            }
+            int size = Integer.parseInt(sizeField.getText());
+            if (sizeField.getText().length() > 0 && size < 4) {
+                JOptionPane.showMessageDialog(this,
+                        "Size must be bigger than 3", "Error Message",
+                        JOptionPane.ERROR_MESSAGE);
+                // do not execute algorith and focus size text field
+                sizeField.requestFocus();
+                return;
+            }
+
             String algorithm = algorithmComboBox.getSelectedItem().toString();
             System.out.println("Size: " + Integer.toString(size) + ", Algorithm: " + algorithm);
-            showChessboard(size, algorithm);
+
+            // calculate execution time
+            var start = System.currentTimeMillis();
+            // execute the algorithm
+            var state = Algorithm.execute(size, algorithm).getState();
+            var end = System.currentTimeMillis();
+            executionTime.setText("execution time: " + Long.toString(end - start) + "ms");
+            showChessboard(size, state);
         }
     }
 
     // show the chessboard
-    private void showChessboard(int size, String algorithm) {
-        var state = Algorithm.execute(size, algorithm).getState();
+    private void showChessboard(int size, State state) {
         JPanel boardPanel = new JPanel(new GridLayout(size, size));
         for (int i = 0; i < size; i++) {
             var position = state.getValues().get(i);

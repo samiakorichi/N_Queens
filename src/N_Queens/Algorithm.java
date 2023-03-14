@@ -11,10 +11,14 @@ public class Algorithm {
         result = dfs_visitor.runDfs();
         break;
 
-      // "bfs"
-      default:
+      case "BFS":
         BFS bfs_visitor = new BFS(initial);
         result = bfs_visitor.runBfs();
+        break;
+
+      case "A* heuristic 1":
+        break;
+      case "A* heuristic 2":
         break;
     }
     return result;
