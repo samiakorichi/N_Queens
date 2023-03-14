@@ -2,9 +2,9 @@ package N_Queens;
 
 import java.util.ArrayList;
 
-public class Node {
-
-    int n;
+public class Node { 
+ 
+    static int n;
     private State state; // current node state
     private Node parent; // parent node that generated the current node
     private ArrayList<Node> neighbors; // all neighboring nodes
@@ -26,8 +26,17 @@ public class Node {
         this.neighbors = new ArrayList<>();
         this.n = n;
     }
+    
 
-    public ArrayList<Node> generateNeighborhoods() {
+	public int getN() {
+		return n;
+	}
+
+	public void setN(int n) {
+		this.n = n;
+	}
+
+	public ArrayList<Node> generateNeighborhoods() {
         // Generate all the neighbors of the current no
         // and stores it in this 'neigh' list
         ArrayList<Node> neighbors = new ArrayList<>();
@@ -43,6 +52,26 @@ public class Node {
                 Node u = new Node(new State(newState), this, n); // creates the new neighbor node
                 neighbors.add(u); // adds the created node to the neighborhood
             }
+        }
+        return this.neighbors = neighbors; // returns String that represents the state of this node
+    }
+    
+    public ArrayList<Node> generateNeighborhoodsA() {
+        // Generate all the neighbors of the current no
+        // and stores it in this 'neigh' list
+        ArrayList<Node> neighbors = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            // If it is possible to put the integer i at the end of the vector without
+            // hurting the game properties,
+            // then it is added as neighbor
+            //if (isValidOperation(i)) {
+                ArrayList<Integer> newState = new ArrayList<>(state.getValues()); // creating a copy of the current
+                                                                                  // state
+                newState.add(i); // adds the integer i at the end
+                Node u = new Node(new State(newState), this, n); // creates the new neighbor node
+                neighbors.add(u); // adds the created node to the neighborhood
+            
         }
         return this.neighbors = neighbors; // returns String that represents the state of this node
     }
@@ -80,10 +109,16 @@ public class Node {
     public Node getParent() {
         return parent;
     }
+    
+    public void setParent(Node parent) {
+		this.parent = parent;
+	}
+    
+    
 
     @Override
     public String toString() {
-        // retorna String que representa o estado desse nó
+        //
         String res = "[";
         for (int i = 0; i < state.getValues().size(); i++) {
             res += this.state.getValues().get(i);
@@ -161,7 +196,40 @@ public class Node {
         res = res + "}";
         return res;
     }
+    
+/////////////////////////////////////////////////////////////
+    public int getHeuristic() {
+	    int actualCost = 0;
+	    Node current = this;
+	    while (current.getParent() != null) {
+	        actualCost++;
+	        current = current.getParent();
+	    }
+	    return actualCost + getCost();
+	}
 
+    public int getCost() {
+	    int cost = 0;
+	    ArrayList<Integer> values = State.getValues();
+	    for (int i = 0; i < values.size(); i++) {
+	        for (int j = i + 1; j < values.size(); j++) {
+	            int xi = i;
+	            int yi = values.get(i);
+	            int xj = j;
+	            int yj = values.get(j);
+	            if (yi == yj || xi + yi == xj + yj || xi - yi == xj - yj) {
+	                cost++;
+	            }
+	        }
+	    }
+	    return cost;
+	}
+
+
+    
+
+////////////////
+    
     public String showTree() {
         return "";
     }

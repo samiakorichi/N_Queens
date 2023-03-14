@@ -9,12 +9,14 @@ public class BFS {
     private Node initial; // nœud où la recherche sera lancée
     private String treePath; // string avec tous les nœuds visités dans l'ordre et leurs voisins
     private int treePathSize;
+    private static int nodesGenerated;
 
     public BFS(Node initial) {
         this.initial = initial;
         this.objectiveNode = null;
         this.treePath = "empty!";
         this.treePathSize = 0;
+        this.nodesGenerated = 0;
     }
 
     public Node runBfs() {
@@ -47,6 +49,7 @@ public class BFS {
             }
             for (Node u : v.getNeighbors()) { // recherche tous les voisins U des sommets actuels V
                 queue.push(u); // ajoute le voisin U à la file d'attente
+                nodesGenerated++; // increment nodesGenerated
             }
             // Le fait que l'espace de recherche généré soit un graphe dirigé acyclique
             // indique que nous n'avons pas besoin de contrôler la redondance
@@ -56,5 +59,9 @@ public class BFS {
 
     public String getTreePath() {
         return treePath;
+    }
+    
+    public static int getNodesGenerated() {
+        return nodesGenerated;
     }
 }

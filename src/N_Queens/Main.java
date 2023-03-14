@@ -26,28 +26,58 @@ public class Main {
             }
 
             Node initial = new Node(n);
+            Node initialh = new Node(n);
             Node result;
             String showTree = "";
 
+            
+ 
             while (true) {
-                System.out.println("Vous souhaitez effectuer un dfs ou un bfs [dfs|bfs]");
+                System.out.println("Vous souhaitez effectuer un dfs ou un bfs ou A* [dfs|bfs|heur]");
                 String op = scan.nextLine().toLowerCase();
-
+                
+                
+                
+                 
                 if (op.contains("dfs")) {
+                    //execution time calculation
+                    long startTime = System.nanoTime();
                     DFS dfs_visitor = new DFS(initial);
                     result = dfs_visitor.runDfs();
+                    long endTime = System.nanoTime();
+                    long duration = (endTime - startTime);
+                    System.out.println("Execution time: " + duration + "ns");
+                    System.out.println("Number of generated nodes: " + DFS.getNodesGenerated());
                     showTree = dfs_visitor.getTreePath();
                     break;
                 } else if (op.contains("bfs")) {
+                    //execution time calculation
+                    long startTime2 = System.nanoTime();
                     BFS bfs_visitor = new BFS(initial); // realize a BFS
                     result = bfs_visitor.runBfs(); // enregistre le nœud objectif trouvé ou null s'il n'y a pas de
                                                    // solution
+                    long endTime2 = System.nanoTime();
+                    long duration2 = (endTime2 - startTime2);
+                    System.out.println("Execution time: " + duration2 + "ns");
+                    System.out.println("Number of generated nodes: " + BFS.getNodesGenerated());
                     showTree = bfs_visitor.getTreePath(); // enregistre l'espace de recherche dans une chaîne de
                                                           // caractères
+                    
                     break;
                 }
+                else if(op.contains("heur")){
+                	long startTime3 = System.nanoTime();
+                    A_Etoile h_visitor = new A_Etoile(initialh); //realize a heuristique
+                    result = h_visitor.runA1();       //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
+                    long endTime3 = System.nanoTime();
+                    long duration3 = (endTime3 - startTime3);
+                    System.out.println("Execution time: " + duration3 + "ns");
+                    System.out.println("Number of generated nodes: " +A_Etoile.getNodesGenerated());
+                    //showTree = h_visitor.getTreePath(); //enregistre l'espace de recherche dans une chaîne de caractères
+                    break;
             }
-
+            
+            }
             if (result == null) {
                 // npas de solution
                 System.out.println("Désolé, il n'y a pas de solution pour n" + n);
@@ -69,10 +99,13 @@ public class Main {
                 // affiche tous les nœuds générés au cours de la recherche, ainsi que les
                 // voisins de chaque nœud
                 System.out.println(showTree);
+                
 
             }
-            System.out.println("Appuyer sur ENTER pour recommencer");
-            scan.nextLine();
-        }
+            
+            //System.out.println("Appuyer sur ENTER pour recommencer");
+            //scan.nextLine();
+        
     }
+}
 }
