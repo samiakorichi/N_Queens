@@ -1,6 +1,7 @@
 package N_Queens;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Node { 
  
@@ -17,23 +18,23 @@ public class Node {
         this.state = state;
         this.parent = parent;
         this.neighbors = new ArrayList<>();
-        this.n = n;
+        Node.n = n;
     }
 
     public Node(int n) {
         this.state = new State(new ArrayList<>());
         this.parent = null;
         this.neighbors = new ArrayList<>();
-        this.n = n;
+        Node.n = n;
     }
     
 
-	public int getN() {
+	public static int getN() {
 		return n;
 	}
 
 	public void setN(int n) {
-		this.n = n;
+		Node.n = n;
 	}
 
 	public ArrayList<Node> generateNeighborhoods() {
@@ -56,26 +57,6 @@ public class Node {
         return this.neighbors = neighbors; // returns String that represents the state of this node
     }
     
-    public ArrayList<Node> generateNeighborhoodsA() {
-        // Generate all the neighbors of the current no
-        // and stores it in this 'neigh' list
-        ArrayList<Node> neighbors = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            // If it is possible to put the integer i at the end of the vector without
-            // hurting the game properties,
-            // then it is added as neighbor
-            //if (isValidOperation(i)) {
-                ArrayList<Integer> newState = new ArrayList<>(state.getValues()); // creating a copy of the current
-                                                                                  // state
-                newState.add(i); // adds the integer i at the end
-                Node u = new Node(new State(newState), this, n); // creates the new neighbor node
-                neighbors.add(u); // adds the created node to the neighborhood
-            
-        }
-        return this.neighbors = neighbors; // returns String that represents the state of this node
-    }
-
     private boolean isValidOperation(int x) {
         // Tests if it is possible to add the x at the end of the vector
 
@@ -121,7 +102,7 @@ public class Node {
         //
         String res = "[";
         for (int i = 0; i < state.getValues().size(); i++) {
-            res += this.state.getValues().get(i);
+            res += state.getValues().get(i);
             if (i != state.getValues().size() - 1)
                 res += ',';
         }
@@ -156,7 +137,7 @@ public class Node {
         String res = "";
         Node atual = this;
         while (atual != null) {
-            res = atual.toString(showBoard) + "\n" + "_".repeat(this.n * 2 + 2) + "\n" + res;
+            res = atual.toString(showBoard) + "\n" + "_".repeat(Node.n * 2 + 2) + "\n" + res;
             atual = atual.getParent();
         }
         return res;
@@ -197,36 +178,108 @@ public class Node {
         return res;
     }
     
+    private boolean isSafe(int row, int col) {
+        ArrayList<Integer> values = this.state.getValues();
+        // check if there is a Queen on the same column
+        for (int i = 0; i < row; i++) {
+            if (values.get(i) == col) {
+                return false;
+            }
+        }
+        // check if there is a Queen on the same diagonal (top-left to bottom-right)
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (values.get(i) == j) {
+                return false;
+            }
+        }
+        // check if there is a Queen on the same diagonal (top-right to bottom-left)
+        for (int i = row - 1, j = col + 1; i >= 0 && j < values.size(); i--, j++) {
+            if (values.get(i) == j) {
+                return false;
+            }
+        }
+        // if no threats are found, the placement is safe
+        return true;
+    }
+
+    
+    
 /////////////////////////////////////////////////////////////
-    public int getHeuristic() {
+    public int getCost() {
 	    int actualCost = 0;
 	    Node current = this;
 	    while (current.getParent() != null) {
 	        actualCost++;
 	        current = current.getParent();
 	    }
-	    return actualCost + getCost();
+	    return actualCost;
 	}
 
-    public int getCost() {
-	    int cost = 0;
-	    ArrayList<Integer> values = State.getValues();
-	    for (int i = 0; i < values.size(); i++) {
-	        for (int j = i + 1; j < values.size(); j++) {
+    public int getHeuristic1() {
+	    int Heur1 = 0;
+	  //  ArrayList<Integer> values = state.getValues();
+	    for (int i = 0; i < state.getValues().size(); i++) {
+	        for (int j = i + 1; j < state.getValues().size(); j++) {
 	            int xi = i;
-	            int yi = values.get(i);
+	            int yi = state.getValues().get(i);
 	            int xj = j;
-	            int yj = values.get(j);
+	            int yj = state.getValues().get(j);
 	            if (yi == yj || xi + yi == xj + yj || xi - yi == xj - yj) {
-	                cost++;
+	                Heur1++;
 	            }
 	        }
 	    }
-	    return cost;
+	    return Heur1;
 	}
 
+    //Heuristic 2
+    int getHeur2() {
+        int minRemaining = Integer.MAX_VALUE; // initialize to max value
+        int numRemaining;
 
-    
+        // loop through each variable (row) in the state
+        for (int i = 0; i < this.state.getValues().size(); i++) {
+            // check if the variable has already been assigned (i.e. has a value)
+            if (this.state.getValues().get(i) == null) {
+                numRemaining = countRemainingValues(i);
+                if (numRemaining < minRemaining) {
+                    minRemaining = numRemaining;
+                }
+            }
+        }
+
+        return minRemaining;
+    }
+
+
+    private int countRemainingValues(int row) {
+        int count = 0;
+        ArrayList<Integer> values = this.state.getValues();
+        // initialize the set of available values to be all columns
+        HashSet<Integer> availableValues = new HashSet<>();
+        for (int i = 0; i < values.size(); i++) {
+            availableValues.add(i);
+        }
+        // remove the columns that are already occupied by Queens
+        for (int i = 0; i < values.size(); i++) {
+            Integer col = values.get(i);
+            if (col != null) {
+                availableValues.remove(col);
+            }
+        }
+        // count the number of safe remaining values (i.e. not threatened by other Queens)
+        for (Integer col : availableValues) {
+            if (isSafe(row, col)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+
+
+  
 
 ////////////////
     

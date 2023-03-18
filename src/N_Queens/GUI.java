@@ -1,6 +1,8 @@
 package N_Queens;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -18,11 +20,24 @@ public class GUI extends JFrame implements ActionListener {
         setResizable(true);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        JPanel rightPanel = new JPanel(new GridLayout(0, 1));
-        mainPanel.add(rightPanel, BorderLayout.EAST);
+
+        // Create the chessboard panel
+        JPanel chessboardFrame = new JPanel(new BorderLayout());
+        chessboardFrame.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "N Queens Board"));
+         
+        chessboardFrame.setBackground(Color.GRAY);
+        chessboardPanel = new JPanel(new GridLayout(0, 1));
+        chessboardFrame.add(chessboardPanel, BorderLayout.CENTER);
+        mainPanel.add(chessboardFrame, BorderLayout.CENTER);
+
+        // Create the input and output panel
+        JPanel inputOutputFrame = new JPanel(new BorderLayout());
+        inputOutputFrame.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Input"));
+        JPanel inputOutputPanel = new JPanel(new GridLayout(0, 1));
+        inputOutputFrame.setBackground(Color.GRAY);
 
         JLabel sizeLabel = new JLabel("Choose the size of the chessboard:");
-        rightPanel.add(sizeLabel);
+        inputOutputPanel.add(sizeLabel);
         sizeField = new JTextField();
         // accept only numbers
         sizeField.addKeyListener(new KeyAdapter() {
@@ -35,23 +50,23 @@ public class GUI extends JFrame implements ActionListener {
             }
         });
 
-        rightPanel.add(sizeField);
+        inputOutputPanel.add(sizeField);
         // label for the image
         JLabel solutionLabel = new JLabel();
-        rightPanel.add(solutionLabel);
+        inputOutputPanel.add(solutionLabel);
 
         JLabel algorithmLabel = new JLabel("Choose the search algorithm:");
-        rightPanel.add(algorithmLabel);
+        inputOutputPanel.add(algorithmLabel);
 
         algorithmComboBox = new JComboBox<String>(new String[] { "BFS", "DFS", "A* heuristic 1", "A* heuristic 2" });
         algorithmComboBox.setSelectedIndex(0);
         algorithmComboBox.setPreferredSize(new Dimension(30, 20));
-        rightPanel.add(algorithmComboBox);
+        inputOutputPanel.add(algorithmComboBox);
 
         submitButton = new JButton("Submit");
         submitButton.setPreferredSize(new Dimension(30, 20));
         submitButton.addActionListener(this); // Listen to submit button
-        rightPanel.add(submitButton);
+        inputOutputPanel.add(submitButton);
 
         // Create text areas
         JTextArea textArea1 = new JTextArea();
@@ -67,14 +82,14 @@ public class GUI extends JFrame implements ActionListener {
 
         executionTime = new JLabel();
 
-        rightPanel.add(label1);
-        rightPanel.add(textArea1);
-        rightPanel.add(executionTime);
-        rightPanel.add(label3);
-        rightPanel.add(textArea3);
+        inputOutputPanel.add(label1);
+        inputOutputPanel.add(textArea1);
+        inputOutputPanel.add(executionTime);
+        inputOutputPanel.add(label3);
+        inputOutputPanel.add(textArea3);
 
-        chessboardPanel = new JPanel(new GridLayout(0, 1));
-        mainPanel.add(chessboardPanel, BorderLayout.CENTER);
+        inputOutputFrame.add(inputOutputPanel, BorderLayout.CENTER);
+        mainPanel.add(inputOutputFrame, BorderLayout.EAST);
 
         setContentPane(mainPanel);
         setVisible(true);
@@ -124,12 +139,15 @@ public class GUI extends JFrame implements ActionListener {
                     panel.setBackground(Color.BLACK);
                 }
                 if (j == position) {
+                	
                     ImageIcon image = new ImageIcon(new ImageIcon("queen.png")
                             .getImage().getScaledInstance(400 / size, 400 / size, Image.SCALE_DEFAULT));
                     JLabel imageLabel = new JLabel(image);
-                    imageLabel.setBackground(Color.white);
+                    imageLabel.setBackground(new Color(0, 0, 0, 0)); // Set background color to transparent
+                    imageLabel.setOpaque(true); // Make the label opaque
+
                     imageLabel.setOpaque(true);
-                    imageLabel.setBackground(Color.BLACK);
+                    //imageLabel.setBackground(Color.BLACK);
                     imageLabel.setVerticalAlignment(JLabel.CENTER);
                     imageLabel.setHorizontalAlignment(JLabel.CENTER);
                     boardPanel.add(imageLabel);

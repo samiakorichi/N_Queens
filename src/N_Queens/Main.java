@@ -1,12 +1,14 @@
 package N_Queens;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("hello");
+        
         int n = 0;
 
         while (true) {
@@ -68,7 +70,7 @@ public class Main {
                 else if(op.contains("heur")){
                 	long startTime3 = System.nanoTime();
                     A_Etoile h_visitor = new A_Etoile(initialh); //realize a heuristique
-                    result = h_visitor.runA1();       //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
+                    result = h_visitor.runAStar();       //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
                     long endTime3 = System.nanoTime();
                     long duration3 = (endTime3 - startTime3);
                     System.out.println("Execution time: " + duration3 + "ns");
