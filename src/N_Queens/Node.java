@@ -249,7 +249,7 @@ public class Node {
         }
 
         return minRemaining;
-    }
+    } 
 
 
     private int countRemainingValues(int row) {

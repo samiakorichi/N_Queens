@@ -65,7 +65,7 @@ public class Main {
                     showTree = bfs_visitor.getTreePath(); // enregistre l'espace de recherche dans une chaîne de
                                                           // caractères
                     
-                    break;
+                    break; 
                 }
                 else if(op.contains("heur1")){
                 	long startTime3 = System.nanoTime();

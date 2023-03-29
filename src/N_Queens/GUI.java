@@ -100,7 +100,7 @@ public class GUI extends JFrame implements ActionListener {
         setContentPane(mainPanel);
         setVisible(true);
     }
-
+ 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
             if (sizeField.getText().length() == 0) {
@@ -182,7 +182,7 @@ public class GUI extends JFrame implements ActionListener {
                             .getImage().getScaledInstance(400 / size, 400 / size, Image.SCALE_DEFAULT));
                     JLabel imageLabel = new JLabel(image);
                     imageLabel.setBackground(new Color(0, 0, 0, 0)); // Set background color to transparent
-                    imageLabel.setOpaque(true); // Make the label opaque
+                    imageLabel.setOpaque(false); // Make the label opaque
                 
                     imageLabel.setVerticalAlignment(JLabel.CENTER);
                     imageLabel.setHorizontalAlignment(JLabel.CENTER);

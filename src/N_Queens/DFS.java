@@ -15,7 +15,7 @@ public class DFS {
     public DFS(Node inicial){
         this.initial = inicial;
         this.objectiveNode = null;
-        this.treePath = "";
+        this.treePath = ""; 
         this.treePathSize = 0;
         this.nodesGenerated=0;
     }

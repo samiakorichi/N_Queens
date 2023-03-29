@@ -10,7 +10,7 @@ public class A_Etoile{
     private String treePath; // string avec tous les nœuds visités dans l'ordre et leurs voisins
     private int treePathSize;
     private int nodesGenerated;
-    private int heur;
+    private int heur; 
 
     public A_Etoile (Node initial) {
         this.initial = initial;

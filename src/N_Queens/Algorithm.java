@@ -8,7 +8,7 @@ public class Algorithm {
     int nodesGenerated = 0;
     int nodesExpended = 0;
     
-
+ 
     switch (algorithm) {
       case "DFS":
         dfs_visitor = new DFS(initial);
