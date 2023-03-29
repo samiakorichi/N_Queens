@@ -18,7 +18,5 @@ public class State {
     public ArrayList<Integer> getValues() {
         return values;
     }
-
-
 }
 

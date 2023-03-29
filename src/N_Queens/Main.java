@@ -35,7 +35,7 @@ public class Main {
             
  
             while (true) {
-                System.out.println("Vous souhaitez effectuer un dfs ou un bfs ou A* [dfs|bfs|heur]");
+                System.out.println("Vous souhaitez effectuer un dfs ou un bfs ou A*Heuristique 1 ou A*heuristique 2 [dfs|bfs|heur1|heur2]");
                 String op = scan.nextLine().toLowerCase();
                 
                 
@@ -49,7 +49,7 @@ public class Main {
                     long endTime = System.nanoTime();
                     long duration = (endTime - startTime);
                     System.out.println("Execution time: " + duration + "ns");
-                    System.out.println("Number of generated nodes: " + DFS.getNodesGenerated());
+                    System.out.println("Number of generated nodes: " + dfs_visitor.getNodesGenerated());
                     showTree = dfs_visitor.getTreePath();
                     break;
                 } else if (op.contains("bfs")) {
@@ -61,20 +61,31 @@ public class Main {
                     long endTime2 = System.nanoTime();
                     long duration2 = (endTime2 - startTime2);
                     System.out.println("Execution time: " + duration2 + "ns");
-                    System.out.println("Number of generated nodes: " + BFS.getNodesGenerated());
+                    System.out.println("Number of generated nodes: " + bfs_visitor.getNodesGenerated());
                     showTree = bfs_visitor.getTreePath(); // enregistre l'espace de recherche dans une chaîne de
                                                           // caractères
                     
                     break;
                 }
-                else if(op.contains("heur")){
+                else if(op.contains("heur1")){
                 	long startTime3 = System.nanoTime();
                     A_Etoile h_visitor = new A_Etoile(initialh); //realize a heuristique
-                    result = h_visitor.runAStar();       //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
+                    result = h_visitor.runAStar(1);       //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
                     long endTime3 = System.nanoTime();
                     long duration3 = (endTime3 - startTime3);
                     System.out.println("Execution time: " + duration3 + "ns");
-                    System.out.println("Number of generated nodes: " +A_Etoile.getNodesGenerated());
+                    System.out.println("Number of generated nodes: " +h_visitor.getNodesGenerated());
+                    //showTree = h_visitor.getTreePath(); //enregistre l'espace de recherche dans une chaîne de caractères
+                    break;
+            }
+                else if(op.contains("heur2")){
+                	long startTime3 = System.nanoTime();
+                    A_Etoile h_visitor = new A_Etoile(initialh); //realize a heuristique
+                    result = h_visitor.runAStar(2);       //enregistre le nœud objectif trouvé ou null s'il n'y a pas de solution
+                    long endTime3 = System.nanoTime();
+                    long duration3 = (endTime3 - startTime3);
+                    System.out.println("Execution time: " + duration3 + "ns");
+                    System.out.println("Number of generated nodes: " +h_visitor.getNodesGenerated());
                     //showTree = h_visitor.getTreePath(); //enregistre l'espace de recherche dans une chaîne de caractères
                     break;
             }

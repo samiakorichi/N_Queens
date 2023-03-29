@@ -10,7 +10,7 @@ public class BFS {
     private Node initial;                  //nœud où la recherche sera lancée
     private String treePath;               //string avec tous les nœuds visités dans l'ordre et leurs voisins
     private int treePathSize;
-    private static int nodesGenerated;
+    private int nodesGenerated;
 
 
     public BFS(Node initial){
@@ -58,7 +58,11 @@ public class BFS {
     public String getTreePath() {
         return treePath;
     }
-    public static int getNodesGenerated() {
-        return nodesGenerated;
+
+    public int getNodesGenerated() {
+        return this.nodesGenerated;
+    }
+    public int getTreePathSize() {
+        return this.treePathSize;
     }
 }

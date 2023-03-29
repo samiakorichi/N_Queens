@@ -12,6 +12,8 @@ public class GUI extends JFrame implements ActionListener {
     private JComboBox<String> algorithmComboBox;
     private JTextField sizeField;
     private JLabel executionTime;
+    private JLabel nodesGeneratedLabel;
+    private JLabel nodesExpended;
 
     public GUI() {
         super("Chessboard");
@@ -20,6 +22,7 @@ public class GUI extends JFrame implements ActionListener {
         setResizable(true);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        
 
         // Create the chessboard panel
         JPanel chessboardFrame = new JPanel(new BorderLayout());
@@ -39,6 +42,8 @@ public class GUI extends JFrame implements ActionListener {
         JLabel sizeLabel = new JLabel("Choose the size of the chessboard:");
         inputOutputPanel.add(sizeLabel);
         sizeField = new JTextField();
+        sizeField.setPreferredSize(new Dimension(10, 30));
+
         // accept only numbers
         sizeField.addKeyListener(new KeyAdapter() {
             @Override
@@ -73,20 +78,21 @@ public class GUI extends JFrame implements ActionListener {
         textArea1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JTextArea textArea2 = new JTextArea();
         textArea2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        JTextArea textArea3 = new JTextArea();
-        textArea3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
 
         // Create labels for the text areas
-        JLabel label1 = new JLabel("nombre de noeuds generer");
-        JLabel label3 = new JLabel("Text Area 3");
+
 
         executionTime = new JLabel();
+        nodesGeneratedLabel= new JLabel();
+        nodesExpended= new JLabel();
 
-        inputOutputPanel.add(label1);
-        inputOutputPanel.add(textArea1);
+
         inputOutputPanel.add(executionTime);
-        inputOutputPanel.add(label3);
-        inputOutputPanel.add(textArea3);
+        inputOutputPanel.add(nodesGeneratedLabel);
+        inputOutputPanel.add(nodesExpended);
+
+
 
         inputOutputFrame.add(inputOutputPanel, BorderLayout.CENTER);
         mainPanel.add(inputOutputFrame, BorderLayout.EAST);
@@ -121,9 +127,40 @@ public class GUI extends JFrame implements ActionListener {
             // calculate execution time
             var start = System.currentTimeMillis();
             // execute the algorithm
-            var state = Algorithm.execute(size, algorithm).getState();
+            
+         // execute the algorithm and get the result object
+            var result = Algorithm.execute(size, algorithm);
             var end = System.currentTimeMillis();
             executionTime.setText("execution time: " + Long.toString(end - start) + "ms");
+            // get the generated nodes count from the result object
+            var nodesGenerated = result.nodesGenerated;
+
+            // get the resulting state from the result object
+            var state = result.node.getState();
+
+
+            
+            
+          //Show number of generated nodes
+            if (algorithm.equals("BFS")) {
+                nodesGeneratedLabel.setText("Number of nodes generated: " + String.valueOf(result.nodesGenerated));
+            }
+            
+            if (algorithm.equals("DFS")) {
+                nodesGeneratedLabel.setText("Number of nodes generated: " + String.valueOf(result.nodesGenerated));     
+            }
+            
+            //Show the number of expended nodes
+            
+            if (algorithm.equals("BFS")) {
+                nodesExpended.setText("Number of nodes expended: " + String.valueOf(result.nodesExpended));
+            }
+            
+            if (algorithm.equals("DFS")) {
+                nodesExpended.setText("Number of nodes expended: " + String.valueOf(result.nodesExpended));     
+            }
+            
+            
             showChessboard(size, state);
         }
     }
@@ -135,19 +172,18 @@ public class GUI extends JFrame implements ActionListener {
             var position = state.getValues().get(i);
             for (int j = 0; j < size; j++) {
                 var panel = new JPanel();
+        
                 if ((i + j) % 2 == 1) {
                     panel.setBackground(Color.BLACK);
                 }
                 if (j == position) {
                 	
-                    ImageIcon image = new ImageIcon(new ImageIcon("queen.png")
+                    ImageIcon image = new ImageIcon(new ImageIcon("queeen.png")
                             .getImage().getScaledInstance(400 / size, 400 / size, Image.SCALE_DEFAULT));
                     JLabel imageLabel = new JLabel(image);
                     imageLabel.setBackground(new Color(0, 0, 0, 0)); // Set background color to transparent
                     imageLabel.setOpaque(true); // Make the label opaque
-
-                    imageLabel.setOpaque(true);
-                    //imageLabel.setBackground(Color.BLACK);
+                
                     imageLabel.setVerticalAlignment(JLabel.CENTER);
                     imageLabel.setHorizontalAlignment(JLabel.CENTER);
                     boardPanel.add(imageLabel);

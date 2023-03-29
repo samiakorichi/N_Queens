@@ -9,7 +9,8 @@ public class A_Etoile{
     private Node initial; // nœud où la recherche sera lancée
     private String treePath; // string avec tous les nœuds visités dans l'ordre et leurs voisins
     private int treePathSize;
-    private static int nodesGenerated;
+    private int nodesGenerated;
+    private int heur;
 
     public A_Etoile (Node initial) {
         this.initial = initial;
@@ -17,21 +18,32 @@ public class A_Etoile{
         this.treePath = "empty!";
         this.treePathSize = 0;
         this.nodesGenerated = 0;
+        
     }
 
-    public Node runAStar() {
-        _aStar();
+    public Node runAStar(int heur) {
+        _aStar(heur);
         return objectiveNode;
     }
 
-    private void _aStar() {
+    private void _aStar(int heur) {
 
         PriorityQueue<Node> queue = new PriorityQueue<Node>(new Comparator<Node>() {
             // The priority function combines the cost and heuristic values of each node
             public int compare(Node node1, Node node2) {
-                int f1 = node1.getCost() + node1.getHeur2();
-                int f2 = node2.getCost() + node2.getHeur2();
-                return Integer.compare(f1, f2);
+            	
+            	if(heur==1) {
+                int f1 = node1.getCost() + node1.getHeur1();
+                int f2 = node2.getCost() + node2.getHeur1();
+                return Integer.compare(f1, f2);}
+            	else if(heur==2) {
+                    int f1 = node1.getCost() + node1.getHeur2();
+                    int f2 = node2.getCost() + node2.getHeur2();
+                    return Integer.compare(f1, f2);}
+            	else {
+                    // add a default return statement
+                    return 0;
+                }
             }
         });
 
@@ -58,8 +70,14 @@ public class A_Etoile{
         }
         this.treePath = "empty!";
     }
-    public static int getNodesGenerated() {
-        return nodesGenerated;
+    public int getNodesGenerated() {
+        return this.nodesGenerated;
+    }
+    public int getTreePathSize() {
+        return this.treePathSize;
+    }
+    public String getTreePath() {
+        return treePath;
     }
     
 }

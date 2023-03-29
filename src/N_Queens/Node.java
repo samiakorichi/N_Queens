@@ -215,7 +215,7 @@ public class Node {
 	    return actualCost;
 	}
 
-    public int getHeuristic1() {
+    public int getHeur1() {
 	    int Heur1 = 0;
 	  //  ArrayList<Integer> values = state.getValues();
 	    for (int i = 0; i < state.getValues().size(); i++) {

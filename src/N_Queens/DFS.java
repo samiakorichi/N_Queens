@@ -10,7 +10,7 @@ public class DFS {
     private Node initial;           //node where the search will start
     private String treePath;        //string with all visited nodes in order and their neighbors
     private int treePathSize;       //the number of nodes visited during the search
-    private static int nodesGenerated;
+    private int nodesGenerated;
  
     public DFS(Node inicial){
         this.initial = inicial;
@@ -50,8 +50,12 @@ public class DFS {
     public String getTreePath() {
         return treePath;
     }
-    public static int getNodesGenerated() {
-        return nodesGenerated;
+    public int getNodesGenerated() {
+        return this.nodesGenerated;
     }
+    public int getTreePathSize() {
+        return this.treePathSize;
+    }
+
 }
 
