@@ -20,6 +20,7 @@ public class DFS {
         this.nodesGenerated=0;
     }
 
+    
     public Node runDfs(){    //execute le parcours en profondeur
         _dfs(initial);                 //la pile est utilisée implicitement par les appels récursifs
         return objectiveNode;

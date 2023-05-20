@@ -18,7 +18,6 @@ public class A_Etoile{
         this.treePath = "empty!";
         this.treePathSize = 0;
         this.nodesGenerated = 0;
-        
     }
 
     public Node runAStar(int heur) {

@@ -251,7 +251,6 @@ public class Node {
         return minRemaining;
     } 
 
-
     private int countRemainingValues(int row) {
         int count = 0;
         ArrayList<Integer> values = this.state.getValues();

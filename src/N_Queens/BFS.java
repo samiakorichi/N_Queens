@@ -40,6 +40,7 @@ public class BFS {
             this.treePath += v.toStringNeighbors() + "\n";  //sauvegarde le noeud V et ses voisins dans le String treePath
             this.treePathSize++;
            
+            
             if(v.isObjective()){            
                 objectiveNode = v;        
                 this.treePath += "Recherche en largeur terminée avec succès! Nombre de noeuds parcourus: " + this.treePathSize + ".\n";

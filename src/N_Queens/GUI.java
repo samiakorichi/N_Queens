@@ -5,6 +5,8 @@ import javax.swing.border.Border;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 
 public class GUI extends JFrame implements ActionListener {
     private JButton submitButton;
@@ -12,9 +14,8 @@ public class GUI extends JFrame implements ActionListener {
     private JComboBox<String> algorithmComboBox;
     private JTextField sizeField;
     private JLabel executionTime;
-    private JLabel nodesGeneratedLabel;
-    private JLabel nodesExpended;
 
+    
     public GUI() {
         super("Chessboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +23,6 @@ public class GUI extends JFrame implements ActionListener {
         setResizable(true);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        
 
         // Create the chessboard panel
         JPanel chessboardFrame = new JPanel(new BorderLayout());
@@ -42,8 +42,6 @@ public class GUI extends JFrame implements ActionListener {
         JLabel sizeLabel = new JLabel("Choose the size of the chessboard:");
         inputOutputPanel.add(sizeLabel);
         sizeField = new JTextField();
-        sizeField.setPreferredSize(new Dimension(10, 30));
-
         // accept only numbers
         sizeField.addKeyListener(new KeyAdapter() {
             @Override
@@ -63,7 +61,7 @@ public class GUI extends JFrame implements ActionListener {
         JLabel algorithmLabel = new JLabel("Choose the search algorithm:");
         inputOutputPanel.add(algorithmLabel);
 
-        algorithmComboBox = new JComboBox<String>(new String[] { "BFS", "DFS", "A* heuristic 1", "A* heuristic 2" });
+        algorithmComboBox = new JComboBox<String>(new String[] { "BFS", "DFS", "A* heuristic 1", "A* heuristic 2", "Genetic","pso" });
         algorithmComboBox.setSelectedIndex(0);
         algorithmComboBox.setPreferredSize(new Dimension(30, 20));
         inputOutputPanel.add(algorithmComboBox);
@@ -73,26 +71,15 @@ public class GUI extends JFrame implements ActionListener {
         submitButton.addActionListener(this); // Listen to submit button
         inputOutputPanel.add(submitButton);
 
-        // Create text areas
-        JTextArea textArea1 = new JTextArea();
-        textArea1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JTextArea textArea2 = new JTextArea();
         textArea2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-
-        // Create labels for the text areas
-
+       // JTextArea textArea3 = new JTextArea();
+        //textArea3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         executionTime = new JLabel();
-        nodesGeneratedLabel= new JLabel();
-        nodesExpended= new JLabel();
-
 
         inputOutputPanel.add(executionTime);
-        inputOutputPanel.add(nodesGeneratedLabel);
-        inputOutputPanel.add(nodesExpended);
-
-
+        
 
         inputOutputFrame.add(inputOutputPanel, BorderLayout.CENTER);
         mainPanel.add(inputOutputFrame, BorderLayout.EAST);
@@ -100,14 +87,15 @@ public class GUI extends JFrame implements ActionListener {
         setContentPane(mainPanel);
         setVisible(true);
     }
- 
+    
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
             if (sizeField.getText().length() == 0) {
                 JOptionPane.showMessageDialog(this,
                         "Size is empty", "Error Message",
                         JOptionPane.ERROR_MESSAGE);
-                // do not execute algorith and focus size text field
+                // do not execute algorithm and focus size text field
                 sizeField.requestFocus();
                 return;
             }
@@ -127,40 +115,9 @@ public class GUI extends JFrame implements ActionListener {
             // calculate execution time
             var start = System.currentTimeMillis();
             // execute the algorithm
-            
-         // execute the algorithm and get the result object
-            var result = Algorithm.execute(size, algorithm);
+            var state = Algorithm.execute(size, algorithm).getState();
             var end = System.currentTimeMillis();
             executionTime.setText("execution time: " + Long.toString(end - start) + "ms");
-            // get the generated nodes count from the result object
-            var nodesGenerated = result.nodesGenerated;
-
-            // get the resulting state from the result object
-            var state = result.node.getState();
-
-
-            
-            
-          //Show number of generated nodes
-            if (algorithm.equals("BFS")) {
-                nodesGeneratedLabel.setText("Number of nodes generated: " + String.valueOf(result.nodesGenerated));
-            }
-            
-            if (algorithm.equals("DFS")) {
-                nodesGeneratedLabel.setText("Number of nodes generated: " + String.valueOf(result.nodesGenerated));     
-            }
-            
-            //Show the number of expended nodes
-            
-            if (algorithm.equals("BFS")) {
-                nodesExpended.setText("Number of nodes expended: " + String.valueOf(result.nodesExpended));
-            }
-            
-            if (algorithm.equals("DFS")) {
-                nodesExpended.setText("Number of nodes expended: " + String.valueOf(result.nodesExpended));     
-            }
-            
-            
             showChessboard(size, state);
         }
     }
@@ -172,7 +129,6 @@ public class GUI extends JFrame implements ActionListener {
             var position = state.getValues().get(i);
             for (int j = 0; j < size; j++) {
                 var panel = new JPanel();
-        
                 if ((i + j) % 2 == 1) {
                     panel.setBackground(Color.BLACK);
                 }
@@ -182,8 +138,10 @@ public class GUI extends JFrame implements ActionListener {
                             .getImage().getScaledInstance(400 / size, 400 / size, Image.SCALE_DEFAULT));
                     JLabel imageLabel = new JLabel(image);
                     imageLabel.setBackground(new Color(0, 0, 0, 0)); // Set background color to transparent
-                    imageLabel.setOpaque(false); // Make the label opaque
-                
+                    imageLabel.setOpaque(true); // Make the label opaque
+
+                    imageLabel.setOpaque(true);
+                    //imageLabel.setBackground(Color.BLACK);
                     imageLabel.setVerticalAlignment(JLabel.CENTER);
                     imageLabel.setHorizontalAlignment(JLabel.CENTER);
                     boardPanel.add(imageLabel);
@@ -198,7 +156,7 @@ public class GUI extends JFrame implements ActionListener {
         chessboardPanel.revalidate();
         chessboardPanel.repaint();
     }
-
+  
     public static void main(String[] args) {
         new GUI();
     }
